@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap');
+
+body{
+
+    width: 960px;
+    margin: auto;
+}
+
+
+.container{
+    display: grid;
+    grid-template-rows: 100px 1fr 80px;
+}
+
+main img {
+
+    width: 300px;
+    height: 400px;
+    border: solid 1px sandybrown; 
+    border-radius: 10px ;
+    
+}
+
+.img-section{
+
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    
+    gap: 1px;
+}
+
+header h1 {
+
+    color: steelblue;
+    text-align: center;
+    font-family: 'Zen Dots', cursive;
+    font-weight:700;
+    
+}
+
+
+header nav a{
+position: relative;
+left: 370px;
+margin: 15px;
+text-decoration: none;
+
+}
+
+header nav a:hover{
+
+    color: lightcyan;
+    background-color: #f39189;
+}
+
+footer p {
+    text-align: center;
+    
+}
+
