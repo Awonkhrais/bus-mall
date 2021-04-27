@@ -1,8 +1,8 @@
 'use strict';
 
 let imgArray = ['bag.jpg','banana.jpg','bathroom.jpg','boots.jpg','breakfast.jpg','bubblegum.jpg','chair.jpg',
-'cthulhu.jpg','dog-duck.jpg','dragon.jpg','pen.jpg','pet-sweep.jpg','scissors.jpg','shark.jpg','sweep.png','tauntaun.jpg',
-'unicorn.jpg','usb.gif','water-can.jpg','wine-glass.jpg'];
+  'cthulhu.jpg','dog-duck.jpg','dragon.jpg','pen.jpg','pet-sweep.jpg','scissors.jpg','shark.jpg','sweep.png','tauntaun.jpg',
+  'unicorn.jpg','usb.gif','water-can.jpg','wine-glass.jpg'];
 
 
 // get elment by Id
@@ -12,7 +12,7 @@ const firstImg = document.getElementById('leftImg');
 const secondImg = document.getElementById('midImg');
 const thirdImg = document.getElementById('rightImg');
 const viewresult = document.getElementById('viewresult');
-const resultcontainer = document.getElementById('result')
+const resultcontainer = document.getElementById('result');
 imgSection.addEventListener('click',eventHandler);
 viewresult.addEventListener('click',showResults);
 
@@ -50,9 +50,32 @@ Images.all =[];
 for(let i = 0 ; i<imgArray.length ; i++){
 
   new Images(imgArray[i]);
- 
+
 
 }
+
+
+// localstorge
+
+
+function saveData(){
+
+  localStorage.setItem('Images', JSON.stringify(Images.all));
+}
+
+function getData(){
+
+  let imgData = JSON.parse(localStorage.getItem('Images'));
+  // console.log(imgData);
+
+  if (imgData !== null) {
+    Images.all = imgData;
+  }
+  render();
+
+}
+getData();
+
 
 // render function
 
@@ -60,15 +83,15 @@ function render (){
   let leftIndex;
   let midIndex;
   let rightIndex;
- 
+
 
 
 
   do{
-     leftIndex= randomNumberImg(0,imgArray.length-1);
+    leftIndex= randomNumberImg(0,imgArray.length-1);
     midIndex = randomNumberImg(0,imgArray.length-1);
     rightIndex = randomNumberImg(0,imgArray.length-1);
-  }while(leftIndex === rightIndex || leftIndex === midIndex || rightIndex === midIndex || rightIndex === leftNewIndex|| rightIndex === midNewIndex|| rightIndex === rightNewIndex|| leftIndex === leftNewIndex|| leftIndex === midNewIndex || leftIndex === rightNewIndex || midIndex === leftNewIndex || midIndex === midNewIndex || midIndex === rightNewIndex ) 
+  }while(leftIndex === rightIndex || leftIndex === midIndex || rightIndex === midIndex || rightIndex === leftNewIndex|| rightIndex === midNewIndex|| rightIndex === rightNewIndex|| leftIndex === leftNewIndex|| leftIndex === midNewIndex || leftIndex === rightNewIndex || midIndex === leftNewIndex || midIndex === midNewIndex || midIndex === rightNewIndex );
 
 
 
@@ -86,9 +109,9 @@ function render (){
   Images.all[midIndex].shown++;
   Images.all[rightIndex].shown++;
 
-   leftNewIndex = leftIndex;
-   midNewIndex = midIndex;
-   rightNewIndex = rightIndex;
+  leftNewIndex = leftIndex;
+  midNewIndex = midIndex;
+  rightNewIndex = rightIndex;
 
   //   console.log(Images.all);
 
@@ -96,6 +119,8 @@ function render (){
 
 
 }
+
+render();
 
 // event handler
 
@@ -108,33 +133,36 @@ function eventHandler(event){
       Images.all[leftImageIndex].clicks++;
     }
 
-    if( event.target.id === 'midImg' ) {
+    else if( event.target.id === 'midImg' ) {
       Images.all[midImageIndex].clicks++;
     }
 
 
 
-    if( event.target.id === 'rightImg' ) {
+    else if( event.target.id === 'rightImg' ) {
       Images.all[rightImageIndex].clicks++;
+
+    } else {
+
+      saveData();
     }
-
-
-
 
     clickNumber++;
     render();
     // console.log(event);
 
-     } else {
+  }else {
+
     renderChart();
   }
 
 
-  }
+
+}
 
 
 
-render();
+
 
 
 
@@ -143,14 +171,14 @@ render();
 
 function showResults(event){
   let ulElement = document.createElement('ul');
-resultcontainer.appendChild(ulElement);
+  resultcontainer.appendChild(ulElement);
   for (let i = 0; i <Images.all.length; i++) {
     let liElement = document.createElement('li');
     ulElement.appendChild(liElement);
     liElement.textContent = `${Images.all[i].name} had ${Images.all[i].clicks} Votes, and was seen ${Images.all[i].shown} times.`;
   }
 
-viewresult.removeEventListener('click',showResults);
+  viewresult.removeEventListener('click',showResults);
 
 
 }
@@ -170,17 +198,18 @@ function renderChart() {
     shown.push( Images.all[i].shown );
 
   }
-  
 
 
 
 
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
+
+
+  let ctx = document.getElementById('myChart').getContext('2d');
+  let myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: names,
-        datasets: [{
+      labels: names,
+      datasets: [{
         label: '# of clicks',
         data: clicks,
         backgroundColor:
@@ -199,14 +228,14 @@ var myChart = new Chart(ctx, {
       }]
     },
     options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
+      scales: {
+        y: {
+          beginAtZero: true
         }
+      }
     }
-});
-  }
+  });
+}
 
 
 
